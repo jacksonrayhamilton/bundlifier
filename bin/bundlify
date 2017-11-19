@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Figure out which directory this bash script resides within, even when this
+# bash script is referenced via a symlink, so we can accurately tell Node where
+# our program entry point is.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]
+do
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+# Detect ES module support.  First try assuming that "--experimental-modules"
+# has been removed and modules are "on" by default.  If that doesn't work, try
+# again with the flag, silencing errors about the flag not existing on old Node
+# versions.  Finally, fall back to a CJS module.
+if node "${DIR}/detect.mjs"
+then
+  node "${DIR}/cli.mjs" $@
+elif node --experimental-modules "${DIR}/detect.mjs" 2> /dev/null
+then
+  node --experimental-modules "${DIR}/cli.mjs" $@
+else
+  node "${DIR}/cli.js" $@
+fi

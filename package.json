@@ -1,0 +1,28 @@
+{
+  "name": "bundlifier",
+  "version": "0.0.0",
+  "description": "Bundle SCSS into a CSS file and ES modules into a JS file.",
+  "main": "./Bundlifier",
+  "bin": {
+    "bundlify": "./bin/bundlify"
+  },
+  "scripts": {
+    "prepare": "babel '*.mjs' bin/cli.mjs --out-dir .",
+    "watch": "babel '*.mjs' bin/cli.mjs --watch --extensions .mjs --out-dir ."
+  },
+  "dependencies": {
+    "chokidar": "^1.7.0",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "node-sass": "^4.7.1",
+    "rollup": "^0.51.7",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "jacksonrayhamilton/babel-plugin-transform-es2015-modules-commonjs#b0b9a88"
+  }
+}
