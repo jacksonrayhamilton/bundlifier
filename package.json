@@ -10,8 +10,8 @@
   "repository": "jacksonrayhamilton/bundlifier",
   "scripts": {
     "lint": "eslint --ext .mjs .",
-    "prepare": "babel '*.mjs' bin/cli.mjs --out-dir .",
-    "watch": "babel '*.mjs' bin/cli.mjs --watch --extensions .mjs --out-dir ."
+    "prepare": "esm2cjs",
+    "watch": "esm2cjs --watch"
   },
   "dependencies": {
     "chokidar": "^1.7.0",
@@ -24,10 +24,8 @@
     "rollup-plugin-replace": "^2.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "jacksonrayhamilton/babel-plugin-transform-es2015-modules-commonjs#b0b9a88",
     "eslint": "^4.12.0",
-    "eslint-config-will-robinson": "^1.0.0"
+    "eslint-config-will-robinson": "^1.0.0",
+    "esm2cjs": "^1.0.2"
   }
 }
