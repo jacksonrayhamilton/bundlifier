@@ -1,5 +1,2 @@
-/bin/cli.js
-/Bundlifier.js
+*.js
 /node_modules/
-/RollupConfig.js
-/Time.js

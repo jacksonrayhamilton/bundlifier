@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "./Bundlifier",
   "bin": {
-    "bundlify": "./bin/bundlify"
+    "bundlify": "./cli.js"
   },
   "repository": "jacksonrayhamilton/bundlifier",
   "scripts": {

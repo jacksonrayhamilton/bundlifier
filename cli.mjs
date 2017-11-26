@@ -1,4 +1,6 @@
-import Bundlifier from '../Bundlifier';
+#!/usr/bin/env node
+
+import Bundlifier from './Bundlifier';
 import camelCase from 'lodash/camelCase';
 import forOwn from 'lodash/forOwn';
 import nopt from 'nopt';
