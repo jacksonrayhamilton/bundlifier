@@ -15,7 +15,7 @@ var knownOpts = {
   'environment': String,
 };
 var shortHands = {
-  'watch': ['--environment', 'development'],
+  'm': ['--maybe-build'],
   'w': ['--watch'],
 };
 var parsed = nopt(knownOpts, shortHands);
@@ -25,14 +25,18 @@ forOwn(parsed, function (value, name) {
 
 async function start (options) {
   var bundlifier = Bundlifier(options);
-  await bundlifier.start();
+  if (options.watch) {
+    bundlifier.start();
+  } else if (options.maybeBuild) {
+    await bundlifier.maybeBuild();
+  } else {
+    await bundlifier.build();
+  }
 }
 
 start(parsed);
 
-if (parsed['environment'] ?
-    parsed['environment'] === 'development' :
-    process.env.NODE_ENV === 'development') {
+if (parsed.watch) {
   // Don't exit Node if a watcher is running.
   process.stdin.resume();
 }

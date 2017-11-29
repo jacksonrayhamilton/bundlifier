@@ -31,12 +31,7 @@ export default function Bundlifier ({
 
   var rollupConfig = RollupConfig({esInput, jsOutput, environment});
 
-  bundlifier.start = async function () {
-    if (environment === 'development') watch();
-    else await bundlify();
-  };
-
-  function watchES () {
+  function buildAndWatchES () {
     var watcher = rollup.watch(rollupConfig);
     watcher.on('event', function ({code, error}) {
       if (code === 'START') process.stdout.write('The ES watcher is (re)starting at ' + Time() + '...' + '\n');
@@ -55,7 +50,7 @@ export default function Bundlifier ({
 
   var debouncedBundleSCSSLoudly = debounce(bundleSCSSLoudly, 100);
 
-  function watchSCSS () {
+  function buildAndWatchSCSS () {
     var watcher = chokidar.watch(path.join(inputDir, '/**/*.{css,scss}'));
     watcher.on('ready', async function () {
       await bundleSCSSLoudly();
@@ -65,19 +60,14 @@ export default function Bundlifier ({
     });
   }
 
-  function watch () {
-    watchES();
-    watchSCSS();
-  }
+  bundlifier.start = function () {
+    buildAndWatchES();
+    buildAndWatchSCSS();
+  };
 
   async function bundleES () {
     var bundle = await rollup.rollup(rollupConfig);
     return bundle.write(rollupConfig.output);
-  }
-
-  async function maybeBundleES () {
-    if (await fsExistsAsync(jsOutput)) return;
-    return bundleES();
   }
 
   // Track the latest build in case a previous build was interrupted.
@@ -104,14 +94,23 @@ export default function Bundlifier ({
     ]);
   }
 
+  bundlifier.build = function () {
+    return Promise.all([bundleES(), bundleSCSS()]);
+  };
+
+  async function maybeBundleES () {
+    if (await fsExistsAsync(jsOutput)) return;
+    return bundleES();
+  }
+
   async function maybeBundleSCSS () {
     if (await fsExistsAsync(cssOutput)) return;
     return bundleSCSS();
   }
 
-  async function bundlify () {
-    await Promise.all([maybeBundleES(), maybeBundleSCSS()]);
-  }
+  bundlifier.maybeBuild = function () {
+    return Promise.all([maybeBundleES(), maybeBundleSCSS()]);
+  };
 
   return bundlifier;
 }

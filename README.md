@@ -29,19 +29,29 @@ import Bundlifier from 'bundlifier';
 import express from 'express';
 import serveStatic from 'serve-static';
 
-var bundlifier = Bundlifier();
-await bundlifier.start();
+var environment = process.env.NODE_ENV || 'production';
 
-var app = express();
+async function start () {
+  var bundlifier = Bundlifier({environment});
+  if (environment === 'development') {
+    bundlifier.start();
+  } else {
+    await bundlifier.maybeBuild();
+  }
 
-// Resolve source files for Sass source maps.
-app.use('/node_modules', serveStatic('node_modules'));
-app.use('/client', serveStatic('client'));
+  var app = express();
 
-app.listen();
+  // Resolve source files for Sass source maps.
+  app.use('/node_modules', serveStatic('node_modules'));
+  app.use('/client', serveStatic('client'));
+
+  app.listen();
+}
+
+start();
 ```
 
-In development (`process.env.NODE_ENV === 'development'`), files will be bundled in the background initially, and again on subsequent changes to the source files.  In production, files will be bundled if they haven't already been bundled.
+In the above example, in development (`process.env.NODE_ENV === 'development'`), files will be bundled in the background initially, and again on subsequent changes to the source files.  In production, files will be bundled once if they haven't already been bundled, to get the server running quickly and with minimal overhead.
 
 You can customize which files are bundled, too:
 
@@ -59,6 +69,8 @@ Bundlifier({
 ## CLI
 
 Run `bundlify` to bundle files in the current directory's "input directory" into its "output directory," assuming the earlier directory structure.
+
+Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles if ones have not already been created.
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to bundle continuously.
 
