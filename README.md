@@ -7,12 +7,28 @@ Bundlifier assumes this directory structure for your assets, but these names can
 ```
 project/
 ├── client/  (source files)
-│   ├── main.css
+│   ├── main.scss
 │   └── main.mjs
 └── public/  (output files)
     ├── bundle.css
     └── bundle.js
 ```
+
+Bundlifier assumes you write your stylesheets in [Sass][].  It will compile your
+Sass into CSS and add vendor prefixes to your properties with [Autoprefixer][].
+
+[Sass]: http://sass-lang.com/
+[Autoprefixer]: https://github.com/postcss/autoprefixer
+
+Bundlifier assumes you write your JavaScript using ES modules.  Under the hood,
+it combines your graph of modules into a single file using [Rollup][].  You can
+also import modules from your `node_modules` directory using Node.js's module
+resolution rules.
+
+[Rollup]: https://rollupjs.org/
+
+For CSS and JS, source maps will be generated which correctly link back to the
+original source files.
 
 ## Installation
 
