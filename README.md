@@ -1,8 +1,11 @@
 # Bundlifier
 
-The holy grail of bundling source files for a web application into one ".css" and ".js" file each.
+Easily compile Sass to a CSS file and combine ES modules into a JS file.
 
-Bundlifier assumes this directory structure for your assets, but these names can be customized:
+## Quick Start
+
+Bundlifier assumes this directory structure for your assets (but the names can
+be customized):
 
 ```
 project/
@@ -13,6 +16,34 @@ project/
     ├── bundle.css
     └── bundle.js
 ```
+
+Install Bundlifier:
+
+```
+npm i -g bundlifier
+```
+
+Compile Sass to CSS and ES modules to JS (both with source maps):
+
+```
+bundlifier
+```
+
+Done!
+
+You could also watch the files and do that continuously:
+
+```
+bundlifier -w
+```
+
+You could minify the files, too:
+
+```
+bundlifier -c
+```
+
+## In-Depth
 
 Bundlifier assumes you write your stylesheets in [Sass][].  It will compile your
 Sass into CSS and add vendor prefixes to your properties with [Autoprefixer][].
@@ -30,12 +61,31 @@ resolution rules.
 For CSS and JS, source maps will be generated which correctly link back to the
 original source files.
 
-You can optionally minify your output files, too.
+I created Bundlifier to do most of heavy lifting involved in building a typical
+web application.  I wanted to encapsulate what would normally be hundreds of
+lines of configuration in Brunch, Grunt, Gulp, Webpack, NPM scripts, et al, into
+a single command, that just worked.
 
-## Installation
+## CLI
 
-```
-npm i bundlifier
+Run `bundlify` to bundle files in the current directory's "input directory" into its "output directory," assuming the earlier directory structure.
+
+Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles if ones have not already been created.
+
+When building, pass `--compress` (or the shorthand, `-c`) to minify the CSS and JS.
+
+Run `bundlify --watch` (or the shorthand, `bundlify -w`) to bundle continuously.
+
+The options can be customized via the CLI, too:
+
+```js
+bundlify \
+  --input-dir client \
+  --output-dir public \
+  --scss-input main.scss \
+  --css-output bundle.css \
+  --es-input main.mjs \
+  --js-output bundle.js
 ```
 
 ## Programmatic Interface
@@ -108,26 +158,4 @@ Bundlifier({
   esInput: 'main.mjs',
   jsOutput: 'bundle.js',
 })
-```
-
-## CLI
-
-Run `bundlify` to bundle files in the current directory's "input directory" into its "output directory," assuming the earlier directory structure.
-
-Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles if ones have not already been created.
-
-When building, pass `--compress` (or `-c`) to minify the CSS and JS.
-
-Run `bundlify --watch` (or the shorthand, `bundlify -w`) to bundle continuously.
-
-The options can be customized via the CLI, too:
-
-```js
-bundlify \
-  --input-dir client \
-  --output-dir public \
-  --scss-input main.scss \
-  --css-output bundle.css \
-  --es-input main.mjs \
-  --js-output bundle.js
 ```
