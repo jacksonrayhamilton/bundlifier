@@ -27,7 +27,9 @@ In your Node.js web server, start a Bundlifier before listening for requests:
 ```js
 import Bundlifier from 'bundlifier';
 import express from 'express';
+import path from 'path';
 import serveStatic from 'serve-static';
+import {__dirname} from './expose'; // https://tinyurl.com/getting-cjs-variables
 
 var environment = process.env.NODE_ENV || 'production';
 
@@ -38,6 +40,10 @@ async function start () {
   } else {
     await bundlifier.maybeBuild();
   }
+
+  // Prioritize built files, then fall back to source files.
+  app.use(serveStatic(path.join(__dirname, 'public')));
+  app.use(serveStatic(path.join(__dirname, 'client')));
 
   var app = express();
   app.listen();
