@@ -14,6 +14,8 @@ import RollupConfig from './RollupConfig';
 import Time from './Time';
 import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import UglifyJS from 'uglify-es';
 
 export default function Bundlifier ({
   inputDir = 'client',
@@ -22,6 +24,7 @@ export default function Bundlifier ({
   cssOutput = 'bundle.css',
   esInput = 'main.mjs',
   jsOutput = 'bundle.js',
+  compress = false,
   environment = process.env.NODE_ENV
 } = {}) {
   scssInput = path.join(inputDir, scssInput);
@@ -69,6 +72,19 @@ export default function Bundlifier ({
 
   async function bundleES () {
     var bundle = await rollup.rollup(rollupConfig);
+    if (compress) {
+      var result = await bundle.generate(rollupConfig.output);
+      result = UglifyJS.minify({[path.basename(jsOutput)]: result.code}, {
+        sourceMap: {
+          content: result.map.toString(),
+          url: path.basename(jsOutput) + '.map',
+        },
+      });
+      return Promise.all([
+        fsWriteFileAsync(jsOutput, result.code),
+        fsWriteFileAsync(jsOutput + '.map', result.map),
+      ]);
+    }
     return bundle.write(rollupConfig.output);
   }
 
@@ -92,8 +108,10 @@ export default function Bundlifier ({
     if (scssSession !== thisSCSSSession) return false;
     await mkdirpAsync(outputDir);
     if (scssSession !== thisSCSSSession) return false;
+    var plugins = [autoprefixer];
+    if (compress) plugins.push(cssnano);
     try {
-      result = await postcss([autoprefixer])
+      result = await postcss(plugins)
         .process(result.css, {
           from: scssInput,
           to: cssOutput,

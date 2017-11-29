@@ -30,6 +30,8 @@ resolution rules.
 For CSS and JS, source maps will be generated which correctly link back to the
 original source files.
 
+You can optionally minify your output files, too.
+
 ## Installation
 
 ```
@@ -112,6 +114,8 @@ Bundlifier({
 Run `bundlify` to bundle files in the current directory's "input directory" into its "output directory," assuming the earlier directory structure.
 
 Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles if ones have not already been created.
+
+When building, pass `--compress` (or `-c`) to minify the CSS and JS.
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to bundle continuously.
 

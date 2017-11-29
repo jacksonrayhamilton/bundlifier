@@ -16,6 +16,7 @@ var knownOpts = {
 };
 var shortHands = {
   'm': ['--maybe-build'],
+  'c': ['--compress'],
   'w': ['--watch'],
 };
 var parsed = nopt(knownOpts, shortHands);
