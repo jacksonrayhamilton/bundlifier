@@ -47,7 +47,7 @@ import Bundlifier from 'bundlifier';
 var bundlifier = Bundlifier();
 
 // Optionally initialize the Bundlifier with an environment in case the code
-// being bundles cares about that.  (e.g., React will do more error checking in
+// being bundled cares about that.  (e.g., React will do more error checking in
 // development, and will be faster in production).
 var environment = process.env.NODE_ENV || 'production';
 var bundlifier = Bundlifier({environment});
