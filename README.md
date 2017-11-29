@@ -40,11 +40,6 @@ async function start () {
   }
 
   var app = express();
-
-  // Resolve source files for Sass source maps.
-  app.use('/node_modules', serveStatic('node_modules'));
-  app.use('/client', serveStatic('client'));
-
   app.listen();
 }
 

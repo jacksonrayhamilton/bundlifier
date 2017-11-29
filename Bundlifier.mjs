@@ -80,6 +80,7 @@ export default function Bundlifier ({
         file: scssInput,
         outFile: cssOutput,
         sourceMap: true,
+        sourceMapContents: true,
       });
     } catch (error) {
       process.stderr.write('Encountered an error while compiling SCSS: ' + error.message + '\n');
