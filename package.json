@@ -14,10 +14,12 @@
     "watch": "esm2cjs --watch"
   },
   "dependencies": {
+    "autoprefixer": "^7.1.6",
     "chokidar": "^1.7.0",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.7.1",
+    "postcss": "^6.0.14",
     "rollup": "^0.52.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",

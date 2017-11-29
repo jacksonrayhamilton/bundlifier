@@ -12,6 +12,8 @@ var sassRenderAsync = util.promisify(sass.render);
 import rollup from 'rollup';
 import RollupConfig from './RollupConfig';
 import Time from './Time';
+import postcss from 'postcss';
+import autoprefixer from 'autoprefixer';
 
 export default function Bundlifier ({
   inputDir = 'client',
@@ -88,6 +90,21 @@ export default function Bundlifier ({
     }
     if (scssSession !== thisSCSSSession) return false;
     await mkdirpAsync(outputDir);
+    if (scssSession !== thisSCSSSession) return false;
+    try {
+      result = await postcss([autoprefixer])
+        .process(result.css, {
+          from: scssInput,
+          to: cssOutput,
+          map: {
+            prev: result.map.toString(),
+            sourcesContent: true,
+          },
+        });
+    } catch (error) {
+      process.stderr.write('Encountered an error while postprocessing SCSS: ' + error.message + '\n');
+      return false;
+    }
     if (scssSession !== thisSCSSSession) return false;
     return Promise.all([
       fsWriteFileAsync(cssOutput, result.css),
