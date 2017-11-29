@@ -43,7 +43,8 @@ npm i bundlifier
 In any context in Node.js, you can create a Bundlifier and build stuff with it:
 
 ```js
-import Bundlifier from 'bundlifier';
+import Bundlifier from 'bundlifier'; // If you use ES modules.
+var Bundlifier = require('bundlifier'); // If you use CommonJS.
 
 // Initialize a Bundlifier.
 var bundlifier = Bundlifier();
