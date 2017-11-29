@@ -22,6 +22,30 @@ npm i bundlifier
 
 ## Programmatic Interface
 
+In any context in Node.js, you can create a Bundlifier and build stuff with it:
+
+```js
+import Bundlifier from 'bundlifier';
+
+// Initialize a Bundlifier.
+var bundlifier = Bundlifier();
+
+// Optionally initialize the Bundlifier with an environment in case the code
+// being bundles cares about that.  (e.g., React will do more error checking in
+// development, and will be faster in production).
+var environment = process.env.NODE_ENV || 'production';
+var bundlifier = Bundlifier({environment});
+
+// Build continuously.
+bundlifier.start();
+
+// Build only if necessary.  Returns a Promise.
+bundlifier.maybeBuild();
+
+// Unconditionally build once.  Returns a Promise.
+bundlifier.build();
+```
+
 In your Node.js web server, start a Bundlifier before listening for requests:
 
 ```js
