@@ -1,6 +1,7 @@
 # Bundlifier
 
-Easily compile Sass to a CSS file and combine ES modules into a JS file.
+Compile your Sass to a CSS file and combine your ES modules into a JS file, with
+source maps, and optionally minify them, using a single command: `bundlify`!
 
 ## Quick Start
 
@@ -23,25 +24,13 @@ Install Bundlifier:
 npm i -g bundlifier
 ```
 
-Compile Sass to CSS and ES modules to JS (both with source maps):
+In a directory like the `project/` directory above, run `bundlify` to compile
+Sass to CSS and ES modules to JS (both with source maps).  That's it!
 
-```
-bundlifier
-```
+You could also continuously rebuild the files when they change by running
+`bundlify -w`.
 
-Done!
-
-You could also watch the files and do that continuously:
-
-```
-bundlifier -w
-```
-
-You could minify the files, too:
-
-```
-bundlifier -c
-```
+You could also minify the files by running `bundlify -c`.
 
 ## In-Depth
 
