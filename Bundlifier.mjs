@@ -85,6 +85,7 @@ export default function Bundlifier ({
         sourceMapContents: true,
       });
     } catch (error) {
+      if (scssSession !== thisSCSSSession) return false;
       process.stderr.write('Encountered an error while compiling SCSS: ' + error.message + '\n');
       return false;
     }
@@ -102,6 +103,7 @@ export default function Bundlifier ({
           },
         });
     } catch (error) {
+      if (scssSession !== thisSCSSSession) return false;
       process.stderr.write('Encountered an error while postprocessing SCSS: ' + error.message + '\n');
       return false;
     }
