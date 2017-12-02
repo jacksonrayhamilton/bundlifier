@@ -48,24 +48,28 @@ resolution rules.
 [Rollup]: https://rollupjs.org/
 
 For CSS and JS, source maps will be generated which correctly link back to the
-original source files.
+original files.
 
 I created Bundlifier to do most of heavy lifting involved in building a typical
 web application.  I wanted to encapsulate what would normally be hundreds of
 lines of configuration in Brunch, Grunt, Gulp, Webpack, NPM scripts, et al, into
 a single command, that just worked.
 
-## CLI
+## Command Line Interface
 
-Run `bundlify` to bundle files in the current directory's "input directory" into its "output directory," assuming the earlier directory structure.
+Run `bundlify` to build files from the current directory's "input directory"
+(`./client/` by default) and save them to its "output directory" (`./public/` by
+default).
 
-Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles if ones have not already been created.
+Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles
+only if the bundles do not already exist.
 
-When building, pass `--compress` (or the shorthand, `-c`) to minify the CSS and JS.
+Run `bundlify --compress` (or the shorthand, `bundlify -c`) to minify the CSS
+and JS.
 
-Run `bundlify --watch` (or the shorthand, `bundlify -w`) to bundle continuously.
+Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 
-The options can be customized via the CLI, too:
+You can customize which files are processed, too:
 
 ```js
 bundlify \
@@ -79,7 +83,7 @@ bundlify \
 
 ## Programmatic Interface
 
-In any context in Node.js, you can create a Bundlifier and build stuff with it:
+In any context in Node.js, you can create a Bundlifier and build with it:
 
 ```js
 import Bundlifier from 'bundlifier'; // If you use ES modules.
@@ -87,12 +91,6 @@ var Bundlifier = require('bundlifier'); // If you use CommonJS.
 
 // Initialize a Bundlifier.
 var bundlifier = Bundlifier();
-
-// Optionally initialize the Bundlifier with an environment in case the code
-// being bundled cares about that.  (e.g., React will do more error checking in
-// development, and will be faster in production.)
-var environment = process.env.NODE_ENV || 'production';
-var bundlifier = Bundlifier({environment});
 
 // Build continuously.
 bundlifier.start();
@@ -104,7 +102,8 @@ bundlifier.maybeBuild();
 bundlifier.build();
 ```
 
-In your Node.js web server, start a Bundlifier before listening for requests:
+In a Node.js web server, you can start a Bundlifier before listening for
+requests.  Your server can also be your build tool!
 
 ```js
 import Bundlifier from 'bundlifier';
@@ -113,30 +112,27 @@ import path from 'path';
 import serveStatic from 'serve-static';
 import {__dirname} from './expose'; // https://tinyurl.com/getting-cjs-variables
 
-var environment = process.env.NODE_ENV || 'production';
-
 async function start () {
-  var bundlifier = Bundlifier({environment});
-  if (environment === 'development') {
+  var bundlifier = Bundlifier();
+  if (proces.env.NODE_ENV === 'development') {
     bundlifier.start();
   } else {
     await bundlifier.maybeBuild();
   }
-
-  // Prioritize built files, then fall back to source files.
-  app.use(serveStatic(path.join(__dirname, 'public')));
-  app.use(serveStatic(path.join(__dirname, 'client')));
-
   var app = express();
+  app.use(serveStatic(path.join(__dirname, 'public')));
   app.listen();
 }
 
 start();
 ```
 
-In the above example, in development (`process.env.NODE_ENV === 'development'`), files will be bundled in the background initially, and again on subsequent changes to the source files.  In production, files will be bundled once if they haven't already been bundled, to get the server running quickly and with minimal overhead.
+In the above example, in development (`process.env.NODE_ENV === 'development'`),
+files will be built in the background initially, and again on subsequent changes
+to the files.  In production, files will be built if they haven't already been
+built, to get the server running quickly and with minimal overhead.
 
-You can customize which files are bundled, too:
+You can customize which files are processed, too:
 
 ```js
 Bundlifier({
