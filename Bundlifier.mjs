@@ -36,7 +36,7 @@ export default function Bundlifier ({
 
   var rollupConfig = RollupConfig({esInput, jsOutput, environment});
 
-  function buildAndWatchES () {
+  function buildAndWatchEs () {
     var watcher = rollup.watch(rollupConfig);
     watcher.on('event', function ({code, error}) {
       if (code === 'START') process.stdout.write('The ES watcher is (re)starting at ' + Time() + '...' + '\n');
@@ -46,31 +46,31 @@ export default function Bundlifier ({
     });
   }
 
-  async function bundleSCSSLoudly () {
+  async function bundleScssLoudly () {
     process.stdout.write('The SCSS watcher is (re)starting at ' + Time() + '...' + '\n');
-    var succeeded = await bundleSCSS();
+    var succeeded = await bundleScss();
     if (!succeeded) return;
     process.stdout.write('Finished bundling SCSS at ' + Time() + '.' + '\n');
   }
 
-  var debouncedBundleSCSSLoudly = debounce(bundleSCSSLoudly, 100);
+  var debouncedBundleScssLoudly = debounce(bundleScssLoudly, 100);
 
-  function buildAndWatchSCSS () {
+  function buildAndWatchScss () {
     var watcher = chokidar.watch(path.join(inputDir, '/**/*.{css,scss}'));
     watcher.on('ready', async function () {
-      await bundleSCSSLoudly();
-      watcher.on('add', debouncedBundleSCSSLoudly);
-      watcher.on('change', debouncedBundleSCSSLoudly);
-      watcher.on('unlink', debouncedBundleSCSSLoudly);
+      await bundleScssLoudly();
+      watcher.on('add', debouncedBundleScssLoudly);
+      watcher.on('change', debouncedBundleScssLoudly);
+      watcher.on('unlink', debouncedBundleScssLoudly);
     });
   }
 
   bundlifier.start = function () {
-    buildAndWatchES();
-    buildAndWatchSCSS();
+    buildAndWatchEs();
+    buildAndWatchScss();
   };
 
-  async function bundleES () {
+  async function bundleEs () {
     var bundle = await rollup.rollup(rollupConfig);
     if (compress) {
       var result = await bundle.generate(rollupConfig.output);
@@ -91,8 +91,8 @@ export default function Bundlifier ({
   // Track the latest build in case a previous build was interrupted.
   var scssSession;
 
-  async function bundleSCSS () {
-    var thisSCSSSession = scssSession = {};
+  async function bundleScss () {
+    var thisScssSession = scssSession = {};
     try {
       var result = await sassRenderAsync({
         file: scssInput,
@@ -101,13 +101,13 @@ export default function Bundlifier ({
         sourceMapContents: true,
       });
     } catch (error) {
-      if (scssSession !== thisSCSSSession) return false;
+      if (scssSession !== thisScssSession) return false;
       process.stderr.write('Encountered an error while compiling SCSS: ' + error.message + '\n');
       return false;
     }
-    if (scssSession !== thisSCSSSession) return false;
+    if (scssSession !== thisScssSession) return false;
     await mkdirpAsync(outputDir);
-    if (scssSession !== thisSCSSSession) return false;
+    if (scssSession !== thisScssSession) return false;
     var plugins = [autoprefixer];
     if (compress) plugins.push(cssnano);
     try {
@@ -121,11 +121,11 @@ export default function Bundlifier ({
           },
         });
     } catch (error) {
-      if (scssSession !== thisSCSSSession) return false;
+      if (scssSession !== thisScssSession) return false;
       process.stderr.write('Encountered an error while postprocessing SCSS: ' + error.message + '\n');
       return false;
     }
-    if (scssSession !== thisSCSSSession) return false;
+    if (scssSession !== thisScssSession) return false;
     return Promise.all([
       fsWriteFileAsync(cssOutput, result.css),
       fsWriteFileAsync(cssOutput + '.map', result.map),
@@ -133,21 +133,21 @@ export default function Bundlifier ({
   }
 
   bundlifier.build = function () {
-    return Promise.all([bundleES(), bundleSCSS()]);
+    return Promise.all([bundleEs(), bundleScss()]);
   };
 
-  async function maybeBundleES () {
+  async function maybeBundleEs () {
     if (await fsExistsAsync(jsOutput)) return;
-    return bundleES();
+    return bundleEs();
   }
 
-  async function maybeBundleSCSS () {
+  async function maybeBundleScss () {
     if (await fsExistsAsync(cssOutput)) return;
-    return bundleSCSS();
+    return bundleScss();
   }
 
   bundlifier.maybeBuild = function () {
-    return Promise.all([maybeBundleES(), maybeBundleSCSS()]);
+    return Promise.all([maybeBundleEs(), maybeBundleScss()]);
   };
 
   return bundlifier;
