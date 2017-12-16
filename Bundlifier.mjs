@@ -2,23 +2,25 @@ import ScssBundler from './ScssBundler';
 import EsBundler from './EsBundler';
 
 export default function Bundlifier (spec) {
-  var bundlifier = {};
-
   var scssBundler = ScssBundler(spec);
   var esBundler = EsBundler(spec);
 
-  bundlifier.start = function () {
+  function start () {
     esBundler.buildAndWatch();
     scssBundler.buildAndWatch();
-  };
+  }
 
-  bundlifier.build = function () {
+  function build () {
     return Promise.all([esBundler.build(), scssBundler.build()]);
-  };
+  }
 
-  bundlifier.maybeBuild = function () {
+  function maybeBuild () {
     return Promise.all([esBundler.maybeBuild(), scssBundler.maybeBuild()]);
-  };
+  }
 
-  return bundlifier;
+  return {
+    start,
+    build,
+    maybeBuild,
+  };
 }
