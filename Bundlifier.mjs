@@ -6,16 +6,16 @@ export default function Bundlifier (spec) {
   var esBundler = EsBundler(spec);
 
   function start () {
-    esBundler.buildAndWatch();
     scssBundler.buildAndWatch();
+    esBundler.buildAndWatch();
   }
 
   function build () {
-    return Promise.all([esBundler.build(), scssBundler.build()]);
+    return Promise.all([scssBundler.build(), esBundler.build()]);
   }
 
   function maybeBuild () {
-    return Promise.all([esBundler.maybeBuild(), scssBundler.maybeBuild()]);
+    return Promise.all([scssBundler.maybeBuild(), esBundler.maybeBuild()]);
   }
 
   return {
