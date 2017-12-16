@@ -27,30 +27,30 @@ export default function ScssBundler({
   scssInput = path.join(inputDir, scssInput);
   cssOutput = path.join(outputDir, cssOutput);
 
-  async function bundleScssLoudly () {
+  async function buildLoudly () {
     process.stdout.write('The SCSS watcher is (re)starting at ' + Time() + '...' + '\n');
-    var succeeded = await bundleScss();
+    var succeeded = await build();
     if (!succeeded) return;
     process.stdout.write('Finished bundling SCSS at ' + Time() + '.' + '\n');
   }
 
-  var debouncedBundleScssLoudly = debounce(bundleScssLoudly, 100);
+  var debouncedBuildLoudly = debounce(buildLoudly, 100);
 
-  function buildAndWatchScss () {
+  function buildAndWatch () {
     var watcher = chokidar.watch(path.join(inputDir, '/**/*.{css,scss}'));
     watcher.on('ready', async function () {
-      await bundleScssLoudly();
-      watcher.on('add', debouncedBundleScssLoudly);
-      watcher.on('change', debouncedBundleScssLoudly);
-      watcher.on('unlink', debouncedBundleScssLoudly);
+      await buildLoudly();
+      watcher.on('add', debouncedBuildLoudly);
+      watcher.on('change', debouncedBuildLoudly);
+      watcher.on('unlink', debouncedBuildLoudly);
     });
   }
 
   // Track the latest build in case a previous build was interrupted.
-  var scssSession;
+  var session;
 
-  async function bundleScss () {
-    var thisScssSession = scssSession = {};
+  async function build () {
+    var thisSession = session = {};
     try {
       var result = await sassRenderAsync({
         file: scssInput,
@@ -59,13 +59,13 @@ export default function ScssBundler({
         sourceMapContents: true,
       });
     } catch (error) {
-      if (scssSession !== thisScssSession) return false;
+      if (session !== thisSession) return false;
       process.stderr.write('Encountered an error while compiling SCSS: ' + error.message + '\n');
       return false;
     }
-    if (scssSession !== thisScssSession) return false;
+    if (session !== thisSession) return false;
     await mkdirpAsync(outputDir);
-    if (scssSession !== thisScssSession) return false;
+    if (session !== thisSession) return false;
     var plugins = [autoprefixer];
     if (compress) plugins.push(cssnano);
     try {
@@ -79,25 +79,25 @@ export default function ScssBundler({
           },
         });
     } catch (error) {
-      if (scssSession !== thisScssSession) return false;
+      if (session !== thisSession) return false;
       process.stderr.write('Encountered an error while postprocessing SCSS: ' + error.message + '\n');
       return false;
     }
-    if (scssSession !== thisScssSession) return false;
+    if (session !== thisSession) return false;
     return Promise.all([
       fsWriteFileAsync(cssOutput, result.css),
       fsWriteFileAsync(cssOutput + '.map', result.map),
     ]);
   }
 
-  async function maybeBundleScss () {
+  async function maybeBuild () {
     if (await fsExistsAsync(cssOutput)) return;
-    return bundleScss();
+    return build();
   }
 
   return {
-    buildAndWatchScss,
-    bundleScss,
-    maybeBundleScss,
+    buildAndWatch,
+    build,
+    maybeBuild,
   };
 }

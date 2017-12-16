@@ -22,7 +22,7 @@ export default function EsBundler({
 
   var rollupConfig = RollupConfig({esInput, jsOutput, environment});
 
-  function buildAndWatchEs () {
+  function buildAndWatch () {
     var watcher = rollup.watch(rollupConfig);
     watcher.on('event', function ({code, error}) {
       if (code === 'START') process.stdout.write('The ES watcher is (re)starting at ' + Time() + '...' + '\n');
@@ -32,7 +32,7 @@ export default function EsBundler({
     });
   }
 
-  async function bundleEs () {
+  async function build () {
     var bundle = await rollup.rollup(rollupConfig);
     if (compress) {
       var result = await bundle.generate(rollupConfig.output);
@@ -50,14 +50,14 @@ export default function EsBundler({
     return bundle.write(rollupConfig.output);
   }
 
-  async function maybeBundleEs () {
+  async function maybeBuild () {
     if (await fsExistsAsync(jsOutput)) return;
-    return bundleEs();
+    return build();
   }
 
   return {
-    buildAndWatchEs,
-    bundleEs,
-    maybeBundleEs,
+    buildAndWatch,
+    build,
+    maybeBuild,
   };
 }
