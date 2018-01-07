@@ -21,7 +21,7 @@ import cssnano from 'cssnano';
 
 export default function SassBundler({
   sass = {'client/main.scss': 'public/bundle.css'},
-  compress = false,
+  minify = false,
 } = {}) {
   var sassInput = first(keys(sass));
   var inputDir = path.dirname(sassInput);
@@ -68,7 +68,7 @@ export default function SassBundler({
     await mkdirpAsync(outputDir);
     if (session !== thisSession) return false;
     var plugins = [autoprefixer];
-    if (compress) plugins.push(cssnano);
+    if (minify) plugins.push(cssnano);
     try {
       result = await postcss(plugins)
         .process(result.css, {

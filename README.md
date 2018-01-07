@@ -30,7 +30,7 @@ Sass to CSS and ES modules to JS (both with source maps).  That’s it!
 You could also continuously rebuild the files when they change by running
 `bundlify -w`.
 
-You could also minify the files by running `bundlify -c`.
+You could also minify the files by running `bundlify -m`.
 
 ## In-Depth
 
@@ -61,13 +61,16 @@ Run `bundlify` to build files from the current directory’s “input directory�
 (`./client/` by default) and save them to its “output directory” (`./public/` by
 default).
 
-Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles
+Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
 only if the bundles do not already exist.
 
-Run `bundlify --compress` (or the shorthand, `bundlify -c`) to minify the CSS
+Run `bundlify --minify` (or the shorthand, `bundlify -m`) to minify the CSS
 and JS.
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
+
+Run `bundlify --config <config file>` (or the shorthand, `bundlify -c`) to
+specify an alternate config file.
 
 You can customize which files are processed by saving a `bundlifier.json` file
 in your project directory:

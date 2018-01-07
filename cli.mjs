@@ -23,8 +23,8 @@ function getCliOptions () {
     'config': String,
   };
   var shortHands = {
-    'm': ['--maybe-build'],
-    'c': ['--compress'],
+    'n': ['--necessarily'],
+    'm': ['--minify'],
     'w': ['--watch'],
   };
   var parsed = nopt(knownOpts, shortHands);
@@ -55,7 +55,7 @@ async function start () {
   var bundlifier = Bundlifier(options);
   if (options.watch) {
     bundlifier.start();
-  } else if (options.maybeBuild) {
+  } else if (options.necessarily) {
     await bundlifier.maybeBuild();
   } else {
     await bundlifier.build();

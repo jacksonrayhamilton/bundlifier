@@ -13,7 +13,7 @@ var fsWriteFileAsync = util.promisify(fs.writeFile);
 
 export default function EsBundler({
   es = {'client/main.mjs': 'public/bundle.js'},
-  compress = false,
+  minify = false,
   environment = process.env.NODE_ENV,
 } = {}) {
   var esInput = first(keys(es));
@@ -33,7 +33,7 @@ export default function EsBundler({
 
   async function build () {
     var bundle = await rollup.rollup(rollupConfig);
-    if (compress) {
+    if (minify) {
       var result = await bundle.generate(rollupConfig.output);
       result = UglifyJS.minify({[path.basename(jsOutput)]: result.code}, {
         sourceMap: {
