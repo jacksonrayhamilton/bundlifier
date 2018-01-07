@@ -1,4 +1,6 @@
 import util from 'util';
+import first from 'lodash/first';
+import keys from 'lodash/keys';
 import path from 'path';
 import rollup from 'rollup';
 import RollupConfig from './RollupConfig';
@@ -10,15 +12,12 @@ var fsExistsAsync = util.promisify(fs.exists);
 var fsWriteFileAsync = util.promisify(fs.writeFile);
 
 export default function EsBundler({
-  inputDir = 'client',
-  outputDir = 'public',
-  esInput = 'main.mjs',
-  jsOutput = 'bundle.js',
+  es = {'client/main.mjs': 'public/bundle.js'},
   compress = false,
   environment = process.env.NODE_ENV,
 } = {}) {
-  esInput = path.join(inputDir, esInput);
-  jsOutput = path.join(outputDir, jsOutput);
+  var esInput = first(keys(es));
+  var jsOutput = es[esInput];
 
   var rollupConfig = RollupConfig({esInput, jsOutput, environment});
 

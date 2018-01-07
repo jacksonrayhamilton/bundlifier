@@ -1,6 +1,8 @@
 import util from 'util';
 import chokidar from 'chokidar';
 import debounce from 'lodash/debounce';
+import first from 'lodash/first';
+import keys from 'lodash/keys';
 import path from 'path';
 import Time from './Time';
 
@@ -11,21 +13,20 @@ var fsWriteFileAsync = util.promisify(fs.writeFile);
 import mkdirp from 'mkdirp';
 var mkdirpAsync = util.promisify(mkdirp);
 
-import sass from 'node-sass';
-var sassRenderAsync = util.promisify(sass.render);
+import nodeSass from 'node-sass';
+var sassRenderAsync = util.promisify(nodeSass.render);
 import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 export default function ScssBundler({
-  inputDir = 'client',
-  outputDir = 'public',
-  scssInput = 'main.scss',
-  cssOutput = 'bundle.css',
+  sass = {'client/main.scss': 'public/bundle.css'},
   compress = false,
 } = {}) {
-  scssInput = path.join(inputDir, scssInput);
-  cssOutput = path.join(outputDir, cssOutput);
+  var scssInput = first(keys(sass));
+  var inputDir = path.dirname(scssInput);
+  var cssOutput = sass[scssInput];
+  var outputDir = path.dirname(cssOutput);
 
   async function buildLoudly () {
     process.stdout.write('The SCSS watcher is (re)starting at ' + Time() + '...' + '\n');

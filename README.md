@@ -69,16 +69,14 @@ and JS.
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 
-You can customize which files are processed, too:
+You can customize which files are processed by saving a `bundlifier.json` file
+in your project directory:
 
-```js
-bundlify \
-  --input-dir client \
-  --output-dir public \
-  --scss-input main.scss \
-  --css-output bundle.css \
-  --es-input main.mjs \
-  --js-output bundle.js
+```json
+{
+  "sass": {"client/main.scss": "public/bundle.css"},
+  "es": {"client/main.mjs": "public/bundle.js"}
+}
 ```
 
 ## Programmatic Interface
@@ -136,11 +134,7 @@ You can customize which files are processed, too:
 
 ```js
 Bundlifier({
-  inputDir: 'client',
-  outputDir: 'public',
-  scssInput: 'main.scss',
-  cssOutput: 'bundle.css',
-  esInput: 'main.mjs',
-  jsOutput: 'bundle.js',
+  scss: {'client/main.scss': 'public/bundle.css'},
+  es: {'client/main.mjs': 'public/bundle.js'}
 })
 ```
