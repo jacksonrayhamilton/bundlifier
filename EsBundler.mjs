@@ -21,7 +21,7 @@ export default function EsBundler({
 
   var rollupConfig = RollupConfig({esInput, jsOutput, environment});
 
-  function buildAndWatch () {
+  function start () {
     var watcher = rollup.watch(rollupConfig);
     watcher.on('event', function ({code, error}) {
       if (code === 'START') process.stdout.write('The ES watcher is (re)starting at ' + Time() + '...' + '\n');
@@ -55,7 +55,7 @@ export default function EsBundler({
   }
 
   return {
-    buildAndWatch,
+    start,
     build,
     buildNecessarily,
   };

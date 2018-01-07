@@ -6,8 +6,8 @@ export default function Bundlifier (spec) {
   var esBundler = EsBundler(spec);
 
   function start () {
-    sassBundler.buildAndWatch();
-    esBundler.buildAndWatch();
+    sassBundler.start();
+    esBundler.start();
   }
 
   function build () {

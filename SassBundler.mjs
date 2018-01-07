@@ -37,7 +37,7 @@ export default function SassBundler({
 
   var debouncedBuildLoudly = debounce(buildLoudly, 100);
 
-  function buildAndWatch () {
+  function start () {
     var watcher = chokidar.watch(path.join(inputDir, '/**/*.{css,sass,scss}'));
     watcher.on('ready', async function () {
       await buildLoudly();
@@ -97,7 +97,7 @@ export default function SassBundler({
   }
 
   return {
-    buildAndWatch,
+    start,
     build,
     buildNecessarily,
   };
