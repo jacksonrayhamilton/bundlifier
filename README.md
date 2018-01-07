@@ -25,7 +25,7 @@ npm i -g bundlifier
 ```
 
 In a directory like the `project/` directory above, run `bundlify` to compile
-Sass to CSS and ES modules to JS (both with source maps).  That's it!
+Sass to CSS and ES modules to JS (both with source maps).  That’s it!
 
 You could also continuously rebuild the files when they change by running
 `bundlify -w`.
@@ -42,7 +42,7 @@ Sass into CSS and add vendor prefixes to your properties with [Autoprefixer][].
 
 Bundlifier assumes you write your JavaScript using ES modules.  Under the hood,
 it combines your graph of modules into a single file using [Rollup][].  You can
-also import modules from your `node_modules` directory using Node.js's module
+also import modules from your `node_modules` directory using Node.js’s module
 resolution rules.
 
 [Rollup]: https://rollupjs.org/
@@ -57,8 +57,8 @@ a single command, that just worked.
 
 ## Command Line Interface
 
-Run `bundlify` to build files from the current directory's "input directory"
-(`./client/` by default) and save them to its "output directory" (`./public/` by
+Run `bundlify` to build files from the current directory’s “input directory”
+(`./client/` by default) and save them to its “output directory” (`./public/` by
 default).
 
 Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles
@@ -127,7 +127,7 @@ start();
 
 In the above example, in development (`process.env.NODE_ENV === 'development'`),
 files will be built in the background initially, and again on subsequent changes
-to the files.  In production, files will be built if they haven't already been
+to the files.  In production, files will be built if they haven’t already been
 built, to get the server running quickly and with minimal overhead.
 
 You can customize which files are processed, too:
