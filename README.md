@@ -97,7 +97,7 @@ var bundlifier = Bundlifier();
 bundlifier.start();
 
 // Build only if necessary.  Returns a Promise.
-bundlifier.maybeBuild();
+bundlifier.buildNecessarily();
 
 // Unconditionally build once.  Returns a Promise.
 bundlifier.build();
@@ -118,7 +118,7 @@ async function start () {
   if (proces.env.NODE_ENV === 'development') {
     bundlifier.start();
   } else {
-    await bundlifier.maybeBuild();
+    await bundlifier.buildNecessarily();
   }
   var app = express();
   app.use(serveStatic(path.join(__dirname, 'public')));

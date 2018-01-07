@@ -49,7 +49,7 @@ export default function EsBundler({
     return bundle.write(rollupConfig.output);
   }
 
-  async function maybeBuild () {
+  async function buildNecessarily () {
     if (await fsExistsAsync(jsOutput)) return;
     return build();
   }
@@ -57,6 +57,6 @@ export default function EsBundler({
   return {
     buildAndWatch,
     build,
-    maybeBuild,
+    buildNecessarily,
   };
 }

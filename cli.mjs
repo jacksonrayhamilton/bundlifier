@@ -56,7 +56,7 @@ async function start () {
   if (options.watch) {
     bundlifier.start();
   } else if (options.necessarily) {
-    await bundlifier.maybeBuild();
+    await bundlifier.buildNecessarily();
   } else {
     await bundlifier.build();
   }

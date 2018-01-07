@@ -91,7 +91,7 @@ export default function SassBundler({
     ]);
   }
 
-  async function maybeBuild () {
+  async function buildNecessarily () {
     if (await fsExistsAsync(cssOutput)) return;
     return build();
   }
@@ -99,6 +99,6 @@ export default function SassBundler({
   return {
     buildAndWatch,
     build,
-    maybeBuild,
+    buildNecessarily,
   };
 }

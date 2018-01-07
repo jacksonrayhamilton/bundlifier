@@ -14,13 +14,13 @@ export default function Bundlifier (spec) {
     return Promise.all([sassBundler.build(), esBundler.build()]);
   }
 
-  function maybeBuild () {
-    return Promise.all([sassBundler.maybeBuild(), esBundler.maybeBuild()]);
+  function buildNecessarily () {
+    return Promise.all([sassBundler.buildNecessarily(), esBundler.buildNecessarily()]);
   }
 
   return {
     start,
     build,
-    maybeBuild,
+    buildNecessarily,
   };
 }
