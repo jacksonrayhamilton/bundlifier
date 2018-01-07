@@ -63,8 +63,8 @@ default).
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 
-Run `bundlify --minify` (or the shorthand, `bundlify -m`) to minify the CSS
-and JS.
+Run `bundlify --minify` (or the shorthand, `bundlify -m`) to additionally minify
+the CSS and JS.
 
 Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
 only if the bundles do not already exist.
