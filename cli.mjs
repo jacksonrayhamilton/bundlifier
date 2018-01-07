@@ -23,8 +23,8 @@ function getCliOptions () {
     'config': String,
   };
   var shortHands = {
-    'n': ['--necessarily'],
     'm': ['--minify'],
+    'n': ['--necessarily'],
     'w': ['--watch'],
   };
   var parsed = nopt(knownOpts, shortHands);

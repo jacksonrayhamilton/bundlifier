@@ -61,16 +61,13 @@ Run `bundlify` to build files from the current directory’s “input directory�
 (`./client/` by default) and save them to its “output directory” (`./public/` by
 default).
 
-Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
-only if the bundles do not already exist.
+Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 
 Run `bundlify --minify` (or the shorthand, `bundlify -m`) to minify the CSS
 and JS.
 
-Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
-
-Run `bundlify --config <config file>` (or the shorthand, `bundlify -c`) to
-specify an alternate config file.
+Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
+only if the bundles do not already exist.
 
 You can customize which files are processed by saving a `bundlifier.json` file
 in your project directory:
@@ -81,6 +78,9 @@ in your project directory:
   "es": {"client/main.mjs": "public/bundle.js"}
 }
 ```
+
+Run `bundlify --config <config file>` (or the shorthand, `bundlify -c`) to
+specify an alternate config file.
 
 ## Programmatic Interface
 
