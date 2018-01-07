@@ -19,20 +19,20 @@ import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
-export default function ScssBundler({
+export default function SassBundler({
   sass = {'client/main.scss': 'public/bundle.css'},
   compress = false,
 } = {}) {
-  var scssInput = first(keys(sass));
-  var inputDir = path.dirname(scssInput);
-  var cssOutput = sass[scssInput];
+  var sassInput = first(keys(sass));
+  var inputDir = path.dirname(sassInput);
+  var cssOutput = sass[sassInput];
   var outputDir = path.dirname(cssOutput);
 
   async function buildLoudly () {
-    process.stdout.write('The SCSS watcher is (re)starting at ' + Time() + '...' + '\n');
+    process.stdout.write('The Sass watcher is (re)starting at ' + Time() + '...' + '\n');
     var succeeded = await build();
     if (!succeeded) return;
-    process.stdout.write('Finished bundling SCSS at ' + Time() + '.' + '\n');
+    process.stdout.write('Finished bundling Sass at ' + Time() + '.' + '\n');
   }
 
   var debouncedBuildLoudly = debounce(buildLoudly, 100);
@@ -54,14 +54,14 @@ export default function ScssBundler({
     var thisSession = session = {};
     try {
       var result = await sassRenderAsync({
-        file: scssInput,
+        file: sassInput,
         outFile: cssOutput,
         sourceMap: true,
         sourceMapContents: true,
       });
     } catch (error) {
       if (session !== thisSession) return false;
-      process.stderr.write('Encountered an error while compiling SCSS: ' + error.message + '\n');
+      process.stderr.write('Encountered an error while compiling Sass: ' + error.message + '\n');
       return false;
     }
     if (session !== thisSession) return false;
@@ -72,7 +72,7 @@ export default function ScssBundler({
     try {
       result = await postcss(plugins)
         .process(result.css, {
-          from: scssInput,
+          from: sassInput,
           to: cssOutput,
           map: {
             prev: result.map.toString(),
@@ -81,7 +81,7 @@ export default function ScssBundler({
         });
     } catch (error) {
       if (session !== thisSession) return false;
-      process.stderr.write('Encountered an error while postprocessing SCSS: ' + error.message + '\n');
+      process.stderr.write('Encountered an error while postprocessing Sass: ' + error.message + '\n');
       return false;
     }
     if (session !== thisSession) return false;
