@@ -25,9 +25,9 @@ export default function EsBundler({
     var watcher = rollup.watch(rollupConfig);
     watcher.on('event', function ({code, error}) {
       if (code === 'START') process.stdout.write('The ES watcher is (re)starting at ' + Time() + '...' + '\n');
-      else if (code === 'END') process.stdout.write('Finished bundling ES at ' + Time() + '.' + '\n');
-      else if (code === 'ERROR') process.stderr.write('Encountered an error while bundling ES: ' + error.stack + '\n');
-      else if (code === 'FATAL') process.stderr.write('Encountered a fatal error while bundling ES: ' + error.stack + '\n');
+      else if (code === 'END') process.stdout.write('Finished building ES at ' + Time() + '.' + '\n');
+      else if (code === 'ERROR') process.stderr.write('Encountered an error while building ES: ' + error.stack + '\n');
+      else if (code === 'FATAL') process.stderr.write('Encountered a fatal error while building ES: ' + error.stack + '\n');
     });
   }
 

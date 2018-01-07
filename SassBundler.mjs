@@ -32,7 +32,7 @@ export default function SassBundler({
     process.stdout.write('The Sass watcher is (re)starting at ' + Time() + '...' + '\n');
     var succeeded = await build();
     if (!succeeded) return;
-    process.stdout.write('Finished bundling Sass at ' + Time() + '.' + '\n');
+    process.stdout.write('Finished building Sass at ' + Time() + '.' + '\n');
   }
 
   var debouncedBuildLoudly = debounce(buildLoudly, 100);
