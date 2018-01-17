@@ -25,12 +25,12 @@ npm i -g bundlifier
 ```
 
 In a directory like the `project/` directory above, run `bundlify` to compile
-Sass to CSS and ES modules to JS (both with source maps).  That's it!
+Sass to CSS and ES modules to JS (both with source maps).  That’s it!
 
 You could also continuously rebuild the files when they change by running
 `bundlify -w`.
 
-You could also minify the files by running `bundlify -c`.
+You could also minify the files by running `bundlify -m`.
 
 ## In-Depth
 
@@ -42,7 +42,7 @@ Sass into CSS and add vendor prefixes to your properties with [Autoprefixer][].
 
 Bundlifier assumes you write your JavaScript using ES modules.  Under the hood,
 it combines your graph of modules into a single file using [Rollup][].  You can
-also import modules from your `node_modules` directory using Node.js's module
+also import modules from your `node_modules` directory using Node.js’s module
 resolution rules.
 
 [Rollup]: https://rollupjs.org/
@@ -57,29 +57,30 @@ a single command, that just worked.
 
 ## Command Line Interface
 
-Run `bundlify` to build files from the current directory's "input directory"
-(`./client/` by default) and save them to its "output directory" (`./public/` by
+Run `bundlify` to build files from the current directory’s “input directory”
+(`./client/` by default) and save them to its “output directory” (`./public/` by
 default).
-
-Run `bundlify --maybe-build` (or the shorthand, `bundlify -m`) to create bundles
-only if the bundles do not already exist.
-
-Run `bundlify --compress` (or the shorthand, `bundlify -c`) to minify the CSS
-and JS.
 
 Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 
-You can customize which files are processed, too:
+Run `bundlify --minify` (or the shorthand, `bundlify -m`) to additionally minify
+the CSS and JS.
 
-```js
-bundlify \
-  --input-dir client \
-  --output-dir public \
-  --scss-input main.scss \
-  --css-output bundle.css \
-  --es-input main.mjs \
-  --js-output bundle.js
+Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
+only if the bundles do not already exist.
+
+You can customize which files are processed by saving a `bundlifier.json` file
+in your project directory:
+
+```json
+{
+  "sass": {"client/main.scss": "public/bundle.css"},
+  "es": {"client/main.mjs": "public/bundle.js"}
+}
 ```
+
+Run `bundlify --config <config file>` (or the shorthand, `bundlify -c`) to
+specify an alternate config file.
 
 ## Programmatic Interface
 
@@ -96,7 +97,7 @@ var bundlifier = Bundlifier();
 bundlifier.start();
 
 // Build only if necessary.  Returns a Promise.
-bundlifier.maybeBuild();
+bundlifier.buildNecessarily();
 
 // Unconditionally build once.  Returns a Promise.
 bundlifier.build();
@@ -117,7 +118,7 @@ async function start () {
   if (proces.env.NODE_ENV === 'development') {
     bundlifier.start();
   } else {
-    await bundlifier.maybeBuild();
+    await bundlifier.buildNecessarily();
   }
   var app = express();
   app.use(serveStatic(path.join(__dirname, 'public')));
@@ -129,18 +130,14 @@ start();
 
 In the above example, in development (`process.env.NODE_ENV === 'development'`),
 files will be built in the background initially, and again on subsequent changes
-to the files.  In production, files will be built if they haven't already been
+to the files.  In production, files will be built if they haven’t already been
 built, to get the server running quickly and with minimal overhead.
 
 You can customize which files are processed, too:
 
 ```js
 Bundlifier({
-  inputDir: 'client',
-  outputDir: 'public',
-  scssInput: 'main.scss',
-  cssOutput: 'bundle.css',
-  esInput: 'main.mjs',
-  jsOutput: 'bundle.js',
+  scss: {'client/main.scss': 'public/bundle.css'},
+  es: {'client/main.mjs': 'public/bundle.js'}
 })
 ```
