@@ -1,3 +1,4 @@
+import json from 'rollup-plugin-json';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
@@ -11,6 +12,7 @@ export default function RollupConfig ({esInput, jsOutput, environment}) {
       sourcemap: true,
     },
     plugins: [
+      json(),
       resolve(),
       commonjs(),
       replace({
