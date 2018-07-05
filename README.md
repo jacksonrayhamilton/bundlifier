@@ -141,3 +141,39 @@ Bundlifier({
   es: {'client/main.mjs': 'public/bundle.js'}
 })
 ```
+
+## Service Worker Support
+
+Service workers allow for advanced caching optimizations, enabling applications
+to even work offline in some cases.  Bundlifier makes it easy to integrate
+service worker caching into your application.
+
+Simply add `"sw": true` to `bundlifier.json` and all your CSS, JS, and other
+assets will be stored in an offline cache, and will be loaded from there on
+subsequent page loads, and will be updated lazily.
+
+```
+{
+  "sw": true
+}
+```
+
+You can also supply an object with any of the following options to improve your
+caching strategy:
+
+- `precached`: Specify an array of globs for files for which changes to those
+  files should be indicated in a payload in the service worker file, avoiding
+  round trips to check for updates to the files.
+
+- `cachedForever`: Specify an array of regular expression strings for files
+  which, once downloaded, should always be served from the cache (never
+  invalidated).
+
+```
+{
+  "sw": {
+    "precached": ["public\/*.{css,js}"],
+    "cachedForever": ["^https://fonts.(?:googleapis|gstatic).com/(.*)"]
+  }
+}
+```
