@@ -3,7 +3,9 @@ import first from 'lodash/first';
 import keys from 'lodash/keys';
 import path from 'path';
 import rollup from 'rollup';
+import DefaultConfig from './DefaultConfig';
 import RollupConfig from './RollupConfig';
+import SwGenerator from './SwGenerator';
 import Time from './Time';
 import UglifyJS from 'uglify-es';
 
@@ -12,7 +14,8 @@ var fsExistsAsync = util.promisify(fs.exists);
 var fsWriteFileAsync = util.promisify(fs.writeFile);
 
 export default function EsBundler({
-  es = {'client/main.mjs': 'public/bundle.js'},
+  es = DefaultConfig.es,
+  sw = false,
   minify = false,
   environment = process.env.NODE_ENV,
 } = {}) {
@@ -32,6 +35,7 @@ export default function EsBundler({
   }
 
   async function build () {
+    if (sw) rollupConfig.output.footer = SwGenerator.registrationScript;
     var bundle = await rollup.rollup(rollupConfig);
     if (minify) {
       var result = await bundle.generate(rollupConfig.output);

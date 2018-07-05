@@ -1,9 +1,11 @@
 import SassBundler from './SassBundler';
 import EsBundler from './EsBundler';
+import SwGenerator from './SwGenerator';
 
 export default function Bundlifier (spec) {
   var sassBundler = SassBundler(spec);
   var esBundler = EsBundler(spec);
+  var swGenerator = SwGenerator(spec);
 
   function start () {
     sassBundler.start();
@@ -11,7 +13,7 @@ export default function Bundlifier (spec) {
   }
 
   function build () {
-    return Promise.all([sassBundler.build(), esBundler.build()]);
+    return Promise.all([sassBundler.build(), esBundler.build(), swGenerator.build()]);
   }
 
   function buildNecessarily () {
