@@ -11,6 +11,7 @@ SwGenerator.registrationScript = `if (navigator.serviceWorker) {
 }`;
 
 var workerFileName = 'service-worker.js';
+var webFileExtensionPattern = /\.(html|css|js|jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc|ttf|ttc|otf|eot|woff|woff2)$/;
 
 function RuntimeCaching (urlPattern, handler) {
   return {
@@ -48,9 +49,10 @@ export default function SwGenerator ({
         [esDir + '/']: ''
       },
 
-      // By default, cache all assets and lazily check for updates afterwards
+      // By default, cache all assets, and lazily check for updates afterwards
       // (using the staleWhileRevalidate strategy).
-      runtimeCaching: [RuntimeCaching(/./, 'staleWhileRevalidate')],
+      // TODO: Cache the page itself.
+      runtimeCaching: [RuntimeCaching(webFileExtensionPattern, 'staleWhileRevalidate')],
     };
 
     // Set files to be precached (identified for changes via a payload in the
