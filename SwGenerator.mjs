@@ -43,16 +43,18 @@ export default function SwGenerator ({
     if (sw && !isObject(sw)) sw = {};
 
     // Determine where to put generated service worker files.
-    var sassDir = firstDir(first(values(sass)));
-    var esDir = firstDir(first(values(es)));
+    var cssBundle = first(values(sass));
+    var sassDir = firstDir(cssBundle);
+    var jsBundle = first(values(es));
+    var esDir = firstDir(jsBundle);
     var swDir = sw.dir || path.dirname(first(values(es)));
 
     var generateOptions = {
       swDest: path.join(swDir, workerFileName),
 
-      // Don’t precache anything by default.
+      // Precache the generated bundles by default.
       globDirectory: '.',
-      globPatterns: [],
+      globPatterns: [cssBundle, jsBundle],
 
       // Likely ensure precaching entries correspond with URLs.
       modifyUrlPrefix: {
