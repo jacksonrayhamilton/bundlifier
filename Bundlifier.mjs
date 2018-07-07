@@ -12,8 +12,9 @@ export default function Bundlifier (spec) {
     esBundler.start();
   }
 
-  function build () {
-    return Promise.all([sassBundler.build(), esBundler.build(), swGenerator.build()]);
+  async function build () {
+    await Promise.all([sassBundler.build(), esBundler.build()]);
+    await swGenerator.build();
   }
 
   function buildNecessarily () {
