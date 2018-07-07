@@ -172,8 +172,8 @@ caching strategy:
 ```
 {
   "sw": {
-    "precached": ["public\/*.{css,js}"],
-    "cachedForever": ["^https://fonts.(?:googleapis|gstatic).com/(.*)"]
+    "precached": ["public/*.{css,js}"],
+    "cachedForever": ["^https://fonts.(?:googleapis|gstatic).com/.*"]
   }
 }
 ```
