@@ -1,3 +1,4 @@
 export default {
-  es: {'client/main.mjs': 'public/bundle.js'}
+  sass: {'client/main.scss': 'public/bundle.css'},
+  es: {'client/main.mjs': 'public/bundle.js'},
 };
