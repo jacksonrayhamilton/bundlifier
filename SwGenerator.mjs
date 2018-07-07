@@ -13,6 +13,14 @@ SwGenerator.registrationScript = `if (navigator.serviceWorker) {
 var workerFileName = 'service-worker.js';
 var webFileExtensionPattern = /\.(html|css|js|jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc|ttf|ttc|otf|eot|woff|woff2)$/;
 
+function firstDir (aPath) {
+  var match = aPath.match(/(.+?)\//, '');
+  if (match) {
+    return match[1];
+  }
+  return '';
+}
+
 function RuntimeCaching (urlPattern, handler) {
   return {
     urlPattern,
@@ -26,6 +34,7 @@ function RuntimeCaching (urlPattern, handler) {
 }
 
 export default function SwGenerator ({
+  sass = DefaultConfig.sass,
   es = DefaultConfig.es,
   sw = false
 }) {
@@ -34,10 +43,12 @@ export default function SwGenerator ({
     if (sw && !isObject(sw)) sw = {};
 
     // Determine where to put generated service worker files.
-    var esDir = sw.dir || path.dirname(first(values(es)));
+    var sassDir = firstDir(first(values(sass)));
+    var esDir = firstDir(first(values(es)));
+    var swDir = sw.dir || path.dirname(first(values(es)));
 
     var generateOptions = {
-      swDest: path.join(esDir, workerFileName),
+      swDest: path.join(swDir, workerFileName),
 
       // Don’t precache anything by default.
       globDirectory: '.',
@@ -45,8 +56,8 @@ export default function SwGenerator ({
 
       // Likely ensure precaching entries correspond with URLs.
       modifyUrlPrefix: {
-        // TODO: Use an asset-agnostic directory for this.  e.g., “output dir.”
-        [esDir + '/']: ''
+        [sassDir + '/']: '',
+        [esDir + '/']: '',
       },
 
       // By default, cache all assets, and lazily check for updates afterwards
