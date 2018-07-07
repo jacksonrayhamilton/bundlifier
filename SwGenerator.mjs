@@ -42,11 +42,12 @@ export default function SwGenerator ({
     if (!sw) return Promise.resolve();
     if (sw && !isObject(sw)) sw = {};
 
-    // Determine where to put generated service worker files.
     var cssBundle = first(values(sass));
     var sassDir = firstDir(cssBundle);
     var jsBundle = first(values(es));
     var esDir = firstDir(jsBundle);
+
+    // Determine where to put generated service worker files.
     var swDir = sw.dir || path.dirname(first(values(es)));
 
     var generateOptions = {
