@@ -71,7 +71,7 @@ export default function SwGenerator ({
     // Set files to be precached (identified for changes via a payload in the
     // service worker rather than via a round trip).
     if (sw.precached) {
-      generateOptions.globPatterns = sw.precached;
+      generateOptions.globPatterns.push(...sw.precached);
     }
 
     // For assets we want cached forever, apply the cacheFirst runtime caching

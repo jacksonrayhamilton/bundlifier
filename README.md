@@ -163,7 +163,8 @@ caching strategy:
 
 - `precached`: Specify an array of globs for files for which changes to those
   files should be indicated in a payload in the service worker file, avoiding
-  round trips to check for updates to the files.
+  round trips to check for updates to the files.  Generated bundles are
+  automatically precached.
 
 - `cachedForever`: Specify an array of regular expression strings for files
   which, once downloaded, should always be served from the cache (never
@@ -172,7 +173,7 @@ caching strategy:
 ```
 {
   "sw": {
-    "precached": ["public/*.{css,js}"],
+    "precached": ["public/*.{jpg,png}"],
     "cachedForever": ["^https://fonts.(?:googleapis|gstatic).com/.*"]
   }
 }
