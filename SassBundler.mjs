@@ -8,7 +8,6 @@ import DefaultConfig from './DefaultConfig';
 import Time from './Time';
 
 import fs from 'fs';
-var fsExistsAsync = util.promisify(fs.exists);
 var fsWriteFileAsync = util.promisify(fs.writeFile);
 
 import mkdirp from 'mkdirp';

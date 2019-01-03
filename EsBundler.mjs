@@ -10,7 +10,6 @@ import Time from './Time';
 import UglifyJS from 'uglify-es';
 
 import fs from 'fs';
-var fsExistsAsync = util.promisify(fs.exists);
 var fsWriteFileAsync = util.promisify(fs.writeFile);
 
 export default function EsBundler({
