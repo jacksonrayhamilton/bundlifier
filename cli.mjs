@@ -24,7 +24,6 @@ function getCliOptions () {
   };
   var shortHands = {
     'm': ['--minify'],
-    'n': ['--necessarily'],
     'w': ['--watch'],
   };
   var parsed = nopt(knownOpts, shortHands);
@@ -55,8 +54,6 @@ async function start () {
   var bundlifier = Bundlifier(options);
   if (options.watch) {
     bundlifier.start();
-  } else if (options.necessarily) {
-    await bundlifier.buildNecessarily();
   } else {
     await bundlifier.build();
   }

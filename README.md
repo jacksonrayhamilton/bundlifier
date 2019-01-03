@@ -66,9 +66,6 @@ Run `bundlify --watch` (or the shorthand, `bundlify -w`) to build continuously.
 Run `bundlify --minify` (or the shorthand, `bundlify -m`) to additionally minify
 the CSS and JS.
 
-Run `bundlify --necessarily` (or the shorthand, `bundlify -n`) to create bundles
-only if the bundles do not already exist.
-
 You can customize which files are processed by saving a `bundlifier.json` file
 in your project directory:
 
@@ -96,9 +93,6 @@ var bundlifier = Bundlifier();
 // Build continuously.
 bundlifier.start();
 
-// Build only if necessary.  Returns a Promise.
-bundlifier.buildNecessarily();
-
 // Unconditionally build once.  Returns a Promise.
 bundlifier.build();
 ```
@@ -115,11 +109,7 @@ import {__dirname} from './expose'; // https://tinyurl.com/getting-cjs-variables
 
 async function start () {
   var bundlifier = Bundlifier();
-  if (proces.env.NODE_ENV === 'development') {
-    bundlifier.start();
-  } else {
-    await bundlifier.buildNecessarily();
-  }
+  bundlifier.start();
   var app = express();
   app.use(serveStatic(path.join(__dirname, 'public')));
   app.listen();

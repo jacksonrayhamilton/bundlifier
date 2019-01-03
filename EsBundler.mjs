@@ -53,14 +53,8 @@ export default function EsBundler({
     return bundle.write(rollupConfig.output);
   }
 
-  async function buildNecessarily () {
-    if (await fsExistsAsync(jsOutput)) return;
-    return build();
-  }
-
   return {
     start,
     build,
-    buildNecessarily,
   };
 }

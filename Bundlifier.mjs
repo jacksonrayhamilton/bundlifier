@@ -17,13 +17,8 @@ export default function Bundlifier (spec) {
     await swGenerator.build();
   }
 
-  function buildNecessarily () {
-    return Promise.all([sassBundler.buildNecessarily(), esBundler.buildNecessarily()]);
-  }
-
   return {
     start,
     build,
-    buildNecessarily,
   };
 }

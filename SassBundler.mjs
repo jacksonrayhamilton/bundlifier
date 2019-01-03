@@ -92,14 +92,8 @@ export default function SassBundler({
     ]);
   }
 
-  async function buildNecessarily () {
-    if (await fsExistsAsync(cssOutput)) return;
-    return build();
-  }
-
   return {
     start,
     build,
-    buildNecessarily,
   };
 }
