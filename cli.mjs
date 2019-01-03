@@ -39,7 +39,7 @@ async function getConfigOptions (cliOptions) {
   var configFile = cliOptions.config || defaultConfigFile;
   if (!(await fsExistsAsync(configFile))) {
     if (cliOptions.config) {
-      process.stderr.print('Config file “' + configFile + '” does not exist.\n');
+      process.stderr.write('Config file “' + configFile + '” does not exist.\n');
       process.exit(1);
     } else {
       return {};
