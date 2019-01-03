@@ -44,7 +44,7 @@ export default function SwGenerator ({
     var esDir = firstDir(jsBundle);
 
     // Determine where to put generated service worker files.
-    var swDir = sw.dir || path.dirname(first(values(es)));
+    var swDir = sw.dir || path.dirname(jsBundle);
 
     var generateOptions = {
       swDest: path.join(swDir, workerFileName),
