@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import first from 'lodash/first';
 import keys from 'lodash/keys';
 import path from 'path';
+import DefaultConfig from './DefaultConfig';
 import Time from './Time';
 
 import fs from 'fs';
@@ -20,7 +21,7 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 export default function SassBundler({
-  sass = {'client/main.scss': 'public/bundle.css'},
+  sass = DefaultConfig.sass,
   minify = false,
 } = {}) {
   var sassInput = first(keys(sass));
