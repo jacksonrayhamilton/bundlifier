@@ -1,6 +1,7 @@
 import util from 'util';
 import first from 'lodash/first';
 import keys from 'lodash/keys';
+import map from 'lodash/map';
 import path from 'path';
 import rollup from 'rollup';
 import DefaultConfig from './DefaultConfig';
@@ -37,17 +38,21 @@ export default function EsBundler({
     if (sw) rollupConfig.output.footer = SwGenerator.registrationScript;
     var bundle = await rollup.rollup(rollupConfig);
     if (minify) {
-      var result = await bundle.generate(rollupConfig.output);
-      result = UglifyJS.minify({[path.basename(jsOutput)]: result.code}, {
-        sourceMap: {
-          content: result.map.toString(),
-          url: path.basename(jsOutput) + '.map',
-        },
-      });
-      return Promise.all([
-        fsWriteFileAsync(jsOutput, result.code),
-        fsWriteFileAsync(jsOutput + '.map', result.map),
-      ]);
+      var {output} = await bundle.generate(rollupConfig.output);
+      return Promise.all(map(output, function (chunkOrAsset) {
+        if (chunkOrAsset.isAsset) return;
+        var result = chunkOrAsset;
+        result = UglifyJS.minify({[path.basename(jsOutput)]: result.code}, {
+          sourceMap: {
+            content: result.map,
+            url: path.basename(jsOutput) + '.map',
+          },
+        });
+        return Promise.all([
+          fsWriteFileAsync(jsOutput, result.code),
+          fsWriteFileAsync(jsOutput + '.map', result.map),
+        ]);
+      }));
     }
     return bundle.write(rollupConfig.output);
   }
