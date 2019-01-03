@@ -2,3 +2,4 @@
 .eslintrc
 .esm2cjs
 .projectile
+yarn.lock
