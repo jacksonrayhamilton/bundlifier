@@ -16,6 +16,9 @@ export default function RollupConfig ({esInput, jsOutput, environment}) {
       json(),
       resolve(),
       babel({
+        presets: [
+          [require('@babel/preset-env'), {modules: false}],
+        ],
         exclude: 'node_modules/**', // Only transpile our source code.
       }),
       commonjs(),
