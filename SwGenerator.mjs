@@ -14,11 +14,7 @@ var workerFileName = 'service-worker.js';
 var webFileExtensionPattern = /\.(html|css|js|jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc|ttf|ttc|otf|eot|woff|woff2)$/;
 
 function firstDir (aPath) {
-  var match = aPath.match(/(.+?)\//, '');
-  if (match) {
-    return match[1];
-  }
-  return '';
+  return aPath.split(path.sep)[0] || '';
 }
 
 function RuntimeCaching (urlPattern, handler) {
