@@ -125,9 +125,10 @@ Service workers allow for advanced caching optimizations, enabling applications
 to work offline in some cases.  Bundlifier makes it easy to integrate service
 worker caching into your application.
 
-Simply add `"sw": true` to `bundlifier.json` and all your CSS, JS, and other
-assets will be stored in an offline cache, and will be loaded from there on
-subsequent page loads, and will be updated lazily.
+Simply add `"sw": true` to `bundlifier.json`, and then (when building with the
+`--minify` flag), all your CSS, JS, and other assets will be stored in an
+offline cache, and will be loaded from there on subsequent page loads, and will
+be updated lazily.
 
 ```json
 {
@@ -155,6 +156,10 @@ caching strategy:
   }
 }
 ```
+
+Note that service workers may be disabled by the browser unless the site is
+served via HTTPS.  Make sure to install an SSL certificate locally or in
+production.
 
 ## In-Depth
 
