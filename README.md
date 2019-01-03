@@ -79,59 +79,6 @@ in your project directory:
 Run `bundlify --config <config file>` (or the shorthand, `bundlify -c`) to
 specify an alternate config file.
 
-## Programmatic Interface
-
-In any context in Node.js, you can create a Bundlifier and build with it:
-
-```js
-import Bundlifier from 'bundlifier'; // If you use ES modules.
-var Bundlifier = require('bundlifier'); // If you use CommonJS.
-
-// Initialize a Bundlifier.
-var bundlifier = Bundlifier();
-
-// Build continuously.
-bundlifier.start();
-
-// Unconditionally build once.  Returns a Promise.
-bundlifier.build();
-```
-
-In a Node.js web server, you can start a Bundlifier before listening for
-requests.  Your server can also be your build tool!
-
-```js
-import Bundlifier from 'bundlifier';
-import express from 'express';
-import path from 'path';
-import serveStatic from 'serve-static';
-import {__dirname} from './expose'; // https://tinyurl.com/getting-cjs-variables
-
-async function start () {
-  var bundlifier = Bundlifier();
-  bundlifier.start();
-  var app = express();
-  app.use(serveStatic(path.join(__dirname, 'public')));
-  app.listen();
-}
-
-start();
-```
-
-In the above example, in development (`process.env.NODE_ENV === 'development'`),
-files will be built in the background initially, and again on subsequent changes
-to the files.  In production, files will be built if they haven’t already been
-built, to get the server running quickly and with minimal overhead.
-
-You can customize which files are processed, too:
-
-```js
-Bundlifier({
-  scss: {'client/main.scss': 'public/bundle.css'},
-  es: {'client/main.mjs': 'public/bundle.js'}
-})
-```
-
 ## Service Worker Support
 
 Service workers allow for advanced caching optimizations, enabling applications
