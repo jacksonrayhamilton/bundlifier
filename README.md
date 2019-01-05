@@ -43,8 +43,9 @@ project/
 └── public/  (output files)
     ├── bundle.css
     ├── bundle.css.map
-    └── bundle.js
-    └── bundle.js.map
+    ├── bundle.js
+    ├── bundle.js.map
+    └── service-worker.js
 ```
 
 Just run `npx bundlifier` (or drop the “`npx `” if installed globally) to compile
