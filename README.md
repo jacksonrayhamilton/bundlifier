@@ -187,7 +187,7 @@ Service worker support is provided by [Workbox][].
 
 [Workbox]: https://developers.google.com/web/tools/workbox/
 
-I created Bundlifier to do most of heavy lifting involved in building a typical
-web application.  I wanted to encapsulate what would normally be hundreds of
-lines of configuration in Brunch, Grunt, Gulp, Webpack, NPM scripts, et al, into
-a single command, that just worked.
+I created Bundlifier to do most of the heavy lifting involved in building a
+typical web application.  I wanted to encapsulate what would normally be
+hundreds of lines of configuration in Brunch, Grunt, Gulp, Webpack, NPM scripts,
+et al, into a single command, that just worked.
