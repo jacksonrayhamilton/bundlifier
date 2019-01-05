@@ -17,7 +17,7 @@ export default function EsBundler({
   es = DefaultConfig.es,
   sw = false,
   minify = false,
-  environment = process.env.NODE_ENV,
+  environment = process.env.NODE_ENV || (minify && 'production') || undefined,
 } = {}) {
   var esInput = first(keys(es));
   var jsOutput = es[esInput];

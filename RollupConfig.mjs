@@ -24,7 +24,7 @@ export default function RollupConfig ({esInput, jsOutput, environment}) {
       commonjs(),
       replace({
         // Fix Webpack-ism: https://github.com/rollup/rollup/issues/487#issuecomment-177596512
-        'process.env.NODE_ENV': JSON.stringify(environment || 'production'),
+        'process.env.NODE_ENV': JSON.stringify(environment || ''),
       }),
     ],
   };
