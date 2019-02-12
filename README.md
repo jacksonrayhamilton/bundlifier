@@ -48,28 +48,40 @@ project/
     └── service-worker.js
 ```
 
-Just run `npx bundlifier` (or drop the “`npx `” if installed globally) to compile
-your code.  That’s it!
+If `bundlifier` is installed as a dependency, from your terminal with cwd set to
+your project, just run:
 
-You can continuously rebuild the files when they change by running `npx
-bundlifier -w`.  (That’s the shorthand for `bundlifier --watch`.)
+```
+npx bundlify
+```
 
-You can minify the files by running `npx bundlifier -m`.  (That’s the shorthand
-for `bundlifier --minify`.)
+…or, if `bundlifier` is installed globally, omit the “npx” part, and just run:
 
-You could encapsulate these commands into `package.json` scripts to make them
-easy to re-run:
+```
+bundlify
+```
+
+…and then your code will be compiled.  That’s it!
+
+You can continuously rebuild your files when they change by running `bundlify
+-w`.  (That’s the shorthand for `bundlify --watch`.)
+
+You can minify your files by running `bundlify -m`.  (That’s the shorthand for
+`bundlify --minify`.)
+
+You could also encapsulate these commands into `package.json` scripts to make
+them easy to re-run:
 
 ```json
 {
   "scripts": {
-    "build": "bundlifier -m",
-    "dev": "bundlifier -w"
+    "build": "bundlify -m",
+    "dev": "bundlify -w"
   }
 }
 ```
 
-And you could run them like this:
+Then you could run them like this:
 
 ```
 yarn build
@@ -126,10 +138,10 @@ Service workers allow for advanced caching optimizations, enabling applications
 to work offline in some cases.  Bundlifier makes it easy to integrate service
 worker caching into your application.
 
-Simply add `"sw": true` to `bundlifier.json`, and then (when building with the
+Simply add `{"sw": true}` to `bundlifier.json`, and then (when building with the
 `--minify` flag), all your CSS, JS, and other assets will be stored in an
-offline cache, and will be loaded from there on subsequent page loads, and will
-be updated lazily.
+offline cache, and they will be loaded from the cache on subsequent page loads,
+and the cache will be updated lazily.
 
 ```json
 {
@@ -137,8 +149,8 @@ be updated lazily.
 }
 ```
 
-You can also supply an object with any of the following options to improve your
-caching strategy:
+You can also supply an object with any of the following options to improve the
+caching strategy for your particular application:
 
 - `precached`: Specify an array of globs for files for which changes to those
   files should be indicated in a payload in the service worker file, thus
