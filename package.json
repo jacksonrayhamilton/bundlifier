@@ -1,6 +1,6 @@
 {
   "name": "bundlifier",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Bundle Sass into a CSS file and ES modules into a JS file",
   "license": "MIT",
   "main": "./Bundlifier",
