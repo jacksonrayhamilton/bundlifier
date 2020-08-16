@@ -87,7 +87,7 @@ export default function SassBundler({
     if (session !== thisSession) return false;
     return Promise.all([
       fsWriteFileAsync(cssOutput, result.css),
-      fsWriteFileAsync(cssOutput + '.map', result.map),
+      fsWriteFileAsync(cssOutput + '.map', result.map.toString()),
     ]);
   }
 
